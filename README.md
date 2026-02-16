@@ -18,7 +18,8 @@ Type (or paste) any text up to 500 characters and instantly see:
 
 * **Frequency bar chart** — A–Z on the x-axis, count on the y-axis. Each bar is color-coded from cold blue (low frequency) to hot red (high frequency).
 * **Keyboard heatmap** — A standard US QWERTY layout (number row + three letter rows) where each key lights up on a blue-to-red color scale based on how often that character appears. The count is shown in the bottom-right corner of each key.
-* **Live stats** — Total characters, letter count, unique letters used, and the single most frequent letter.
+* **Live stats** — Total characters, letter count, unique letters used, the single most frequent letter, and total gematria value.
+* **Kabbalistic Gematria** — Each English letter is mapped to its Hebrew equivalent using the Mispar Hechrachi (standard value) system. The section shows a total gematria value for your text, a per-word breakdown with individual scores, and expandable per-letter and mapping reference panels.
 
 Everything updates in real time as you type.
 
@@ -36,7 +37,7 @@ Or double-click the file. That's it.
 
 * Pure HTML, CSS, and vanilla JavaScript
 * No frameworks, no build step, no dependencies
-* Single file (~400 lines)
+* Single file (~700 lines)
 * Works offline
 
 ## Color Scale
@@ -54,7 +55,7 @@ The scale is relative — the most frequent character at any moment is always ma
 
 The ancient practice of gematria assigns numerical values to letters and uses those values to find hidden relationships between words. In the standard Hebrew system, Aleph = 1, Bet = 2, and so on, with values jumping by tens and then hundreds for later letters. The Kabbalistic tradition holds that God created the universe through the power of these letters and their numerical values — the Sefer Yetzirah describes the 22 Hebrew letters as the "stones used to build a house."
 
-While this tool doesn't implement gematria directly, it was inspired by the same underlying intuition: that the frequency and distribution of letters in text is meaningful and worth visualizing. Whether you're optimizing a keyboard layout, studying English letter frequencies, or just curious about what your writing looks like at the character level, this tool makes the invisible visible.
+This tool now implements an English-to-Hebrew gematria mapping using the Mispar Hechrachi system. The 22 Hebrew letters map sequentially to A–V (1 through 400), with W mapped to Double Vav (12), X to Samekh (60), Y to Yod (10), and Z to Zayin (7). Type any text and see its gematria value computed in real time — per letter, per word, and as a total. Whether you're optimizing a keyboard layout, studying English letter frequencies, exploring gematria, or just curious about what your writing looks like at the character level, this tool makes the invisible visible.
 
 ## License
 

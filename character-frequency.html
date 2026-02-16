@@ -463,6 +463,197 @@
     opacity: 0.4;
   }
 
+  /* ─── Gematria Section ─── */
+  .gematria-total {
+    text-align: center;
+    padding: 20px 0 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .gematria-total-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .gematria-total-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+    transition: color 0.3s;
+  }
+
+  .gematria-total-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  .gematria-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .gem-word {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    transition: border-color 0.3s;
+  }
+
+  .gem-word:hover {
+    border-color: var(--accent);
+  }
+
+  .gem-word-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .gem-word-eq {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  .gem-word-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .gematria-letters-toggle,
+  .gematria-ref-toggle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 10px 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    transition: color 0.2s;
+  }
+
+  .gematria-letters-toggle:hover,
+  .gematria-ref-toggle:hover {
+    color: var(--text-secondary);
+  }
+
+  .gem-toggle-arrow {
+    font-size: 0.6rem;
+    transition: transform 0.3s;
+  }
+
+  .gem-toggle-arrow.open {
+    transform: rotate(180deg);
+  }
+
+  .gematria-letters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 12px 0;
+  }
+
+  .gem-letter {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 8px;
+    text-align: center;
+    min-width: 48px;
+    transition: background 0.3s;
+  }
+
+  .gem-letter-char {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .gem-letter-hebrew {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  .gem-letter-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .gem-letter.non-alpha {
+    opacity: 0.3;
+    border-color: transparent;
+    min-width: 32px;
+  }
+
+  .gematria-ref {
+    padding: 12px 0;
+  }
+
+  .gem-ref-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 4px;
+  }
+
+  .gem-ref-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+  }
+
+  .gem-ref-eng {
+    color: var(--text-primary);
+    font-weight: 600;
+    width: 14px;
+  }
+
+  .gem-ref-heb {
+    color: var(--text-secondary);
+    width: 20px;
+    text-align: center;
+  }
+
+  .gem-ref-name {
+    color: var(--text-muted);
+    flex: 1;
+  }
+
+  .gem-ref-val {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
   /* ─── Responsive ─── */
   @media (max-width: 768px) {
     .container { padding: 24px 14px; }
@@ -486,6 +677,11 @@
     .key-thumb { width: 30px; height: 28px; }
     .key-thumb .letter { font-size: 0.38rem; }
     .layout-toggle .toggle-label { font-size: 0.58rem; padding: 3px 7px; }
+    .gematria-total-value { font-size: 2rem; }
+    .gem-word { padding: 6px 10px; }
+    .gem-word-text { font-size: 0.7rem; }
+    .gem-letter { min-width: 38px; padding: 4px 6px; }
+    .gem-ref-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
   }
 </style>
 </head>
@@ -509,6 +705,7 @@
     <div class="stat-pill"><span class="label">Letters</span><span class="value" id="statLetters">0</span></div>
     <div class="stat-pill"><span class="label">Unique</span><span class="value" id="statUnique">0</span></div>
     <div class="stat-pill"><span class="label">Most used</span><span class="value" id="statTop">—</span></div>
+    <div class="stat-pill"><span class="label">Gematria</span><span class="value" id="statGematria">0</span></div>
   </div>
 
   <div class="section-title">Frequency Distribution</div>
@@ -528,6 +725,34 @@
       <div class="legend-bar"></div>
       <span class="legend-label">max</span>
     </div>
+  </div>
+
+  <div class="section-title">Kabbalistic Gematria</div>
+  <div class="chart-card" id="gematriaSection" dir="ltr">
+    <div class="gematria-total">
+      <div class="gematria-total-label">Total Gematria Value</div>
+      <div class="gematria-total-value" id="gemTotalValue">0</div>
+      <div class="gematria-total-sub" id="gemTotalSub"></div>
+    </div>
+
+    <div class="gematria-words" id="gematriaWords">
+      <div class="empty-state" style="width:100%">
+        <div class="icon">&#x05D0;</div>
+        <div>Type something to see its gematria value</div>
+      </div>
+    </div>
+
+    <div class="gematria-letters-toggle" id="gemLettersToggle">
+      <span>Letter Breakdown</span>
+      <span class="gem-toggle-arrow" id="gemToggleArrow">&#9660;</span>
+    </div>
+    <div class="gematria-letters" id="gematriaLetters" style="display: none;"></div>
+
+    <div class="gematria-ref-toggle" id="gemRefToggle">
+      <span>Mapping Reference</span>
+      <span class="gem-toggle-arrow" id="gemRefArrow">&#9660;</span>
+    </div>
+    <div class="gematria-ref" id="gematriaRef" style="display: none;"></div>
   </div>
 </div>
 
@@ -603,6 +828,89 @@
       { key: 'Alt', type: 'thumb' }, { key: 'Gui', type: 'thumb' },
     ],
   ];
+
+  // Kabbalistic Gematria (Mispar Hechrachi) — English → Hebrew mapping
+  const GEMATRIA = {
+    a: { hebrew: '\u05D0', name: 'Aleph',      value: 1 },
+    b: { hebrew: '\u05D1', name: 'Bet',        value: 2 },
+    c: { hebrew: '\u05D2', name: 'Gimel',      value: 3 },
+    d: { hebrew: '\u05D3', name: 'Dalet',      value: 4 },
+    e: { hebrew: '\u05D4', name: 'He',         value: 5 },
+    f: { hebrew: '\u05D5', name: 'Vav',        value: 6 },
+    g: { hebrew: '\u05D6', name: 'Zayin',      value: 7 },
+    h: { hebrew: '\u05D7', name: 'Chet',       value: 8 },
+    i: { hebrew: '\u05D8', name: 'Tet',        value: 9 },
+    j: { hebrew: '\u05D9', name: 'Yod',        value: 10 },
+    k: { hebrew: '\u05DB', name: 'Kaf',        value: 20 },
+    l: { hebrew: '\u05DC', name: 'Lamed',      value: 30 },
+    m: { hebrew: '\u05DE', name: 'Mem',        value: 40 },
+    n: { hebrew: '\u05E0', name: 'Nun',        value: 50 },
+    o: { hebrew: '\u05E1', name: 'Samekh',     value: 60 },
+    p: { hebrew: '\u05E2', name: 'Ayin',       value: 70 },
+    q: { hebrew: '\u05E4', name: 'Pe',         value: 80 },
+    r: { hebrew: '\u05E6', name: 'Tsade',      value: 90 },
+    s: { hebrew: '\u05E7', name: 'Qof',        value: 100 },
+    t: { hebrew: '\u05E8', name: 'Resh',       value: 200 },
+    u: { hebrew: '\u05E9', name: 'Shin',       value: 300 },
+    v: { hebrew: '\u05EA', name: 'Tav',        value: 400 },
+    w: { hebrew: '\u05D5\u05D5', name: 'Double Vav', value: 12 },
+    x: { hebrew: '\u05E1', name: 'Samekh',     value: 60 },
+    y: { hebrew: '\u05D9', name: 'Yod',        value: 10 },
+    z: { hebrew: '\u05D6', name: 'Zayin',      value: 7 },
+  };
+
+  // Compute gematria value for a single word
+  function wordGematria(word) {
+    let total = 0;
+    for (const ch of word.toLowerCase()) {
+      if (GEMATRIA[ch]) total += GEMATRIA[ch].value;
+    }
+    return total;
+  }
+
+  // Compute full gematria breakdown for text
+  function computeGematria(text) {
+    const lower = text.toLowerCase();
+    let totalValue = 0;
+    let letterCount = 0;
+
+    for (const ch of lower) {
+      if (GEMATRIA[ch]) {
+        totalValue += GEMATRIA[ch].value;
+        letterCount++;
+      }
+    }
+
+    const words = text.split(/\s+/).filter(w => w.length > 0);
+    const wordBreakdown = words.map(w => ({
+      text: w,
+      value: wordGematria(w),
+    }));
+
+    const letterBreakdown = [];
+    for (const ch of lower) {
+      if (GEMATRIA[ch]) {
+        letterBreakdown.push({
+          char: ch, hebrew: GEMATRIA[ch].hebrew,
+          name: GEMATRIA[ch].name, value: GEMATRIA[ch].value, isAlpha: true,
+        });
+      } else {
+        letterBreakdown.push({
+          char: ch === ' ' ? '\u2423' : ch,
+          hebrew: '', name: '', value: 0, isAlpha: false,
+        });
+      }
+    }
+
+    return { totalValue, letterCount, wordBreakdown, letterBreakdown };
+  }
+
+  // HTML-escape utility
+  function escapeHtml(str) {
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
 
   let currentLayout = 'standard';
 
@@ -790,6 +1098,79 @@
     };
   }
 
+  // Gematria DOM updates
+  function updateGematriaSection(gem) {
+    // Total display
+    document.getElementById('gemTotalValue').textContent = gem.totalValue;
+    document.getElementById('gemTotalSub').textContent =
+      gem.letterCount > 0 ? `${gem.letterCount} letter${gem.letterCount !== 1 ? 's' : ''} evaluated` : '';
+
+    // Per-word breakdown
+    const wordsContainer = document.getElementById('gematriaWords');
+    if (gem.wordBreakdown.length === 0) {
+      wordsContainer.innerHTML =
+        '<div class="empty-state" style="width:100%">' +
+          '<div class="icon">&#x05D0;</div>' +
+          '<div>Type something to see its gematria value</div>' +
+        '</div>';
+    } else {
+      wordsContainer.innerHTML = '';
+      gem.wordBreakdown.forEach(w => {
+        const pill = document.createElement('div');
+        pill.className = 'gem-word';
+        pill.innerHTML =
+          '<span class="gem-word-text">' + escapeHtml(w.text) + '</span>' +
+          '<span class="gem-word-eq">=</span>' +
+          '<span class="gem-word-value">' + w.value + '</span>';
+        wordsContainer.appendChild(pill);
+      });
+    }
+
+    // Per-letter breakdown (lazy: only render when visible)
+    const lettersContainer = document.getElementById('gematriaLetters');
+    lettersContainer._data = gem.letterBreakdown;
+    if (lettersContainer.style.display !== 'none') {
+      renderLetterBreakdown(gem.letterBreakdown, lettersContainer);
+    }
+  }
+
+  function renderLetterBreakdown(data, container) {
+    container.innerHTML = '';
+    if (!data || data.length === 0) return;
+    data.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'gem-letter' + (item.isAlpha ? '' : ' non-alpha');
+      if (item.isAlpha) {
+        el.innerHTML =
+          '<div class="gem-letter-char">' + item.char.toUpperCase() + '</div>' +
+          '<div class="gem-letter-hebrew">' + item.hebrew + '</div>' +
+          '<div class="gem-letter-val">' + item.value + '</div>';
+      } else {
+        el.innerHTML = '<div class="gem-letter-char">' + escapeHtml(item.char) + '</div>';
+      }
+      container.appendChild(el);
+    });
+  }
+
+  // Build static gematria reference table
+  function buildGematriaRef() {
+    const container = document.getElementById('gematriaRef');
+    const grid = document.createElement('div');
+    grid.className = 'gem-ref-grid';
+    LETTERS.forEach(letter => {
+      const g = GEMATRIA[letter];
+      const item = document.createElement('div');
+      item.className = 'gem-ref-item';
+      item.innerHTML =
+        '<span class="gem-ref-eng">' + letter.toUpperCase() + '</span>' +
+        '<span class="gem-ref-heb">' + g.hebrew + '</span>' +
+        '<span class="gem-ref-name">' + g.name + '</span>' +
+        '<span class="gem-ref-val">' + g.value + '</span>';
+      grid.appendChild(item);
+    });
+    container.appendChild(grid);
+  }
+
   function update() {
     const text = textInput.value.toLowerCase();
     const len = textInput.value.length;
@@ -863,11 +1244,38 @@
         countEl.textContent = '';
       }
     });
+
+    // Update gematria
+    const gem = computeGematria(textInput.value);
+    document.getElementById('statGematria').textContent = gem.totalValue || '0';
+    updateGematriaSection(gem);
   }
+
+  // Gematria letter breakdown toggle
+  document.getElementById('gemLettersToggle').addEventListener('click', function() {
+    const container = document.getElementById('gematriaLetters');
+    const arrow = document.getElementById('gemToggleArrow');
+    const isHidden = container.style.display === 'none';
+    container.style.display = isHidden ? 'flex' : 'none';
+    arrow.classList.toggle('open', isHidden);
+    if (isHidden && container._data) {
+      renderLetterBreakdown(container._data, container);
+    }
+  });
+
+  // Gematria mapping reference toggle
+  document.getElementById('gemRefToggle').addEventListener('click', function() {
+    const container = document.getElementById('gematriaRef');
+    const arrow = document.getElementById('gemRefArrow');
+    const isHidden = container.style.display === 'none';
+    container.style.display = isHidden ? 'block' : 'none';
+    arrow.classList.toggle('open', isHidden);
+  });
 
   // Init
   buildBarChart();
   buildKeyboard();
+  buildGematriaRef();
 
   textInput.addEventListener('input', update);
 
