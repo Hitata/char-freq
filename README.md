@@ -1,62 +1,65 @@
 # charfreq
 
-A real-time character frequency visualizer with an A–Z bar chart and a US keyboard heatmap.
+Real-time character frequency analysis, keyboard heatmap, and Kabbalistic gematria visualizer — built with React + Vite, deployed to GitHub Pages.
 
-## Why I Built This
+## Features
 
-Two things collided that made me want to build this quick little tool:
+- **Frequency bar chart** — live letter distribution as you type
+- **Keyboard heatmap** — Standard and Sofle v2 split layouts with heat-color overlay
+- **Kabbalistic Gematria** — Mispar Hechrachi letter-to-number mapping with per-word breakdown
+- **Root Number** — Mispar Katan Mispari (digital root) reduction to a single-digit signature
+- **Collapsible explainer** — plain-English walkthrough of how gematria and root numbers work
 
-1. **I just got a Sofle V2** — a split, columnar-staggered ergonomic keyboard. Switching to a new layout made me hyper-aware of which keys my fingers actually hit and how often. I wanted a way to see the distribution of characters I type across a standard US QWERTY layout and understand what my fingers are actually doing all day.
+## Tech Stack
 
-2. **Letters carry weight** — I'd come across the concept of gematria, a centuries-old system rooted in Kabbalistic (Jewish mystical) tradition where each Hebrew letter corresponds to a numerical value. The idea is that letters aren't just phonetic symbols — they carry quantitative, even spiritual, significance. Words with equal numerical sums are believed to share hidden connections. The practice dates back to at least the 8th century BCE (an Assyrian inscription by Sargon II is the earliest documented use) and was formalized in early Kabbalistic texts like the Sefer Yetzirah (c. 2nd century CE). It made me curious: if every letter has a "weight," what does the weight distribution of ordinary English text actually look like?
+- **React 19** — component-based UI
+- **Vite 6** — fast dev server and static build
+- **GitHub Pages** — zero-config deployment via Actions
 
-This tool is the intersection of those two curiosities — a fast, visual way to explore how characters distribute across the alphabet and across a physical keyboard.
-
-## What It Does
-
-Type (or paste) any text up to 500 characters and instantly see:
-
-* **Frequency bar chart** — A–Z on the x-axis, count on the y-axis. Each bar is color-coded from cold blue (low frequency) to hot red (high frequency).
-* **Keyboard heatmap** — A standard US QWERTY layout (number row + three letter rows) where each key lights up on a blue-to-red color scale based on how often that character appears. The count is shown in the bottom-right corner of each key.
-* **Live stats** — Total characters, letter count, unique letters used, the single most frequent letter, and total gematria value.
-* **Kabbalistic Gematria** — Each English letter is mapped to its Hebrew equivalent using the Mispar Hechrachi (standard value) system. The section shows a total gematria value for your text, a per-word breakdown with individual scores, and expandable per-letter and mapping reference panels.
-
-Everything updates in real time as you type.
-
-## How to Use
-
-It's a single HTML file with zero dependencies. Just open it in a browser:
+## Project Structure
 
 ```
-open character-frequency.html
+src/
+├── main.jsx                  # Entry point
+├── App.jsx                   # Root component — holds text state
+├── components/
+│   ├── Header.jsx            # Title + subtitle
+│   ├── TextInput.jsx         # Textarea with live character counter
+│   ├── StatsRow.jsx          # Summary stat pills
+│   ├── BarChart.jsx          # A–Z frequency bars
+│   ├── Key.jsx               # Reusable keyboard key (shared by both layouts)
+│   ├── KeyboardHeatmap.jsx   # Standard + Sofle keyboards with layout toggle
+│   └── GematriaSection.jsx   # Gematria totals, root number, explainer, breakdowns
+├── hooks/
+│   └── useCharFrequency.js   # All derived computation in one memoized hook
+├── utils/
+│   ├── gematria.js           # GEMATRIA map, word/text computation, digital root
+│   ├── heatColor.js          # Color interpolation for heat visualization
+│   └── keyboard.js           # Layout constants (standard, Sofle v2)
+└── styles/
+    └── index.css             # All styles
 ```
 
-Or double-click the file. That's it.
+## Development
 
-## Tech
-
-* Pure HTML, CSS, and vanilla JavaScript
-* No frameworks, no build step, no dependencies
-* Single file (~700 lines)
-* Works offline
-
-## Color Scale
-
-The heatmap uses a multi-stop gradient:
-
-```
-Dark Blue → Blue → Cyan-Blue → Green → Yellow → Orange → Red → Hot Red
-(0%)                                                            (100%)
+```bash
+npm install
+npm run dev
 ```
 
-The scale is relative — the most frequent character at any moment is always mapped to the hot end, and everything else is proportional.
+Opens at `http://localhost:5173/character-frequency/`
 
-## Background: Gematria
+## Build & Preview
 
-The ancient practice of gematria assigns numerical values to letters and uses those values to find hidden relationships between words. In the standard Hebrew system, Aleph = 1, Bet = 2, and so on, with values jumping by tens and then hundreds for later letters. The Kabbalistic tradition holds that God created the universe through the power of these letters and their numerical values — the Sefer Yetzirah describes the 22 Hebrew letters as the "stones used to build a house."
+```bash
+npm run build
+npm run preview
+```
 
-This tool now implements an English-to-Hebrew gematria mapping using the Mispar Hechrachi system. The 22 Hebrew letters map sequentially to A–V (1 through 400), with W mapped to Double Vav (12), X to Samekh (60), Y to Yod (10), and Z to Zayin (7). Type any text and see its gematria value computed in real time — per letter, per word, and as a total. Whether you're optimizing a keyboard layout, studying English letter frequencies, exploring gematria, or just curious about what your writing looks like at the character level, this tool makes the invisible visible.
+## Deployment
 
-## License
+Push to `main` — the GitHub Actions workflow (`.github/workflows/deploy.yml`) automatically builds and deploys to GitHub Pages.
 
-MIT
+To configure: go to **Settings → Pages → Source → GitHub Actions** in your repository.
+
+> If deploying to a custom domain or the root `username.github.io`, change `base` in `vite.config.js` to `'/'`.
