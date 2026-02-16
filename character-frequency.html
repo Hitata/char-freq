@@ -654,6 +654,135 @@
     font-weight: 500;
   }
 
+  /* ─── Root Number / Digital Root ─── */
+  .gematria-totals-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 20px 0 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .gematria-total-block {
+    text-align: center;
+    flex: 0 1 auto;
+  }
+
+  .root-number-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #b388ff;
+    line-height: 1;
+    margin-bottom: 6px;
+    transition: color 0.3s;
+  }
+
+  .root-number-steps {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-top: 2px;
+  }
+
+  .root-step-arrow {
+    color: var(--text-muted);
+    opacity: 0.5;
+    margin: 0 3px;
+  }
+
+  .root-step-final {
+    color: #b388ff;
+    font-weight: 600;
+  }
+
+  .gematria-divider {
+    width: 1px;
+    background: var(--border);
+    align-self: stretch;
+    margin: 4px 0;
+  }
+
+  /* ─── Explanation Panel ─── */
+  .gematria-explainer {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+
+  .gematria-explainer-toggle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    transition: color 0.2s;
+  }
+
+  .gematria-explainer-toggle:hover {
+    color: var(--text-secondary);
+  }
+
+  .gematria-explainer-body {
+    padding-top: 14px;
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    font-weight: 300;
+  }
+
+  .gematria-explainer-body strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .gematria-explainer-body .explain-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 10px 0;
+    padding: 8px 12px;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent);
+  }
+
+  .gematria-explainer-body .explain-step.step-root {
+    border-left-color: #b388ff;
+  }
+
+  .explain-step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .explain-step.step-root .explain-step-num {
+    color: #b388ff;
+  }
+
+  .explain-step-text {
+    flex: 1;
+  }
+
+  .gematria-explainer-body .explain-note {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 10px;
+    font-style: italic;
+  }
+
   /* ─── Responsive ─── */
   @media (max-width: 768px) {
     .container { padding: 24px 14px; }
@@ -678,6 +807,8 @@
     .key-thumb .letter { font-size: 0.38rem; }
     .layout-toggle .toggle-label { font-size: 0.58rem; padding: 3px 7px; }
     .gematria-total-value { font-size: 2rem; }
+    .root-number-value { font-size: 2rem; }
+    .gematria-totals-row { gap: 20px; }
     .gem-word { padding: 6px 10px; }
     .gem-word-text { font-size: 0.7rem; }
     .gem-letter { min-width: 38px; padding: 4px 6px; }
@@ -706,6 +837,7 @@
     <div class="stat-pill"><span class="label">Unique</span><span class="value" id="statUnique">0</span></div>
     <div class="stat-pill"><span class="label">Most used</span><span class="value" id="statTop">—</span></div>
     <div class="stat-pill"><span class="label">Gematria</span><span class="value" id="statGematria">0</span></div>
+    <div class="stat-pill"><span class="label">Root #</span><span class="value" id="statRoot" style="color:#b388ff">0</span></div>
   </div>
 
   <div class="section-title">Frequency Distribution</div>
@@ -729,10 +861,54 @@
 
   <div class="section-title">Kabbalistic Gematria</div>
   <div class="chart-card" id="gematriaSection" dir="ltr">
-    <div class="gematria-total">
-      <div class="gematria-total-label">Total Gematria Value</div>
-      <div class="gematria-total-value" id="gemTotalValue">0</div>
-      <div class="gematria-total-sub" id="gemTotalSub"></div>
+    <div class="gematria-totals-row">
+      <div class="gematria-total-block">
+        <div class="gematria-total-label">Gematria Value</div>
+        <div class="gematria-total-value" id="gemTotalValue">0</div>
+        <div class="gematria-total-sub" id="gemTotalSub"></div>
+      </div>
+      <div class="gematria-divider"></div>
+      <div class="gematria-total-block">
+        <div class="gematria-total-label">Root Number</div>
+        <div class="root-number-value" id="rootNumberValue">0</div>
+        <div class="root-number-steps" id="rootNumberSteps"></div>
+      </div>
+    </div>
+
+    <div class="gematria-explainer" id="gematriaExplainer">
+      <div class="gematria-explainer-toggle" id="gemExplainerToggle">
+        <span>How does this work?</span>
+        <span class="gem-toggle-arrow" id="gemExplainerArrow">&#9660;</span>
+      </div>
+      <div class="gematria-explainer-body" id="gemExplainerBody" style="display: none;">
+        <p>Gematria and the root number are two steps of the same process:</p>
+
+        <div class="explain-step">
+          <span class="explain-step-num">1</span>
+          <span class="explain-step-text">
+            <strong>Gematria (Mispar Hechrachi)</strong> &mdash; Each letter maps to a number
+            (A=1, B=2 &hellip; J=10, K=20 &hellip; T=200, V=400). Add them all up and you get
+            the <strong>gematria value</strong> &mdash; the raw numerical "weight" of your text.
+          </span>
+        </div>
+
+        <div class="explain-step step-root">
+          <span class="explain-step-num">2</span>
+          <span class="explain-step-text">
+            <strong>Root Number (Mispar Katan Mispari)</strong> &mdash; Take that total and keep
+            adding the digits together until only a single digit (1&ndash;9) remains. For example:
+            <strong>782 &rarr; 7+8+2 = 17 &rarr; 1+7 = 8</strong>. That final digit is the
+            root number &mdash; a kind of single-digit "signature" of your text.
+          </span>
+        </div>
+
+        <p class="explain-note">
+          In Kabbalistic tradition, the Vilna Gaon showed that many traditional Shabbat foods
+          all reduce to a root number of 7 (the seventh day). The root number is mathematically
+          equivalent to the value mod 9 &mdash; it stays the same regardless of which gematria
+          encoding you start from, giving it a special invariance.
+        </p>
+      </div>
     </div>
 
     <div class="gematria-words" id="gematriaWords">
@@ -866,6 +1042,31 @@
       if (GEMATRIA[ch]) total += GEMATRIA[ch].value;
     }
     return total;
+  }
+
+  // Compute the digital root (Mispar Katan Mispari) — keep summing digits until single digit
+  function digitalRoot(n) {
+    if (n === 0) return 0;
+    const r = n % 9;
+    return r === 0 ? 9 : r;
+  }
+
+  // Return the step-by-step reduction from a number down to its digital root
+  // e.g. 782 → [782, 17, 8]
+  function digitalRootSteps(n) {
+    if (n <= 0) return [0];
+    const steps = [n];
+    let current = n;
+    while (current > 9) {
+      let sum = 0;
+      while (current > 0) {
+        sum += current % 10;
+        current = Math.floor(current / 10);
+      }
+      steps.push(sum);
+      current = sum;
+    }
+    return steps;
   }
 
   // Compute full gematria breakdown for text
@@ -1105,6 +1306,29 @@
     document.getElementById('gemTotalSub').textContent =
       gem.letterCount > 0 ? `${gem.letterCount} letter${gem.letterCount !== 1 ? 's' : ''} evaluated` : '';
 
+    // Root number display
+    const root = gem.totalValue > 0 ? digitalRoot(gem.totalValue) : 0;
+    document.getElementById('rootNumberValue').textContent = root;
+
+    const stepsEl = document.getElementById('rootNumberSteps');
+    if (gem.totalValue > 9) {
+      const steps = digitalRootSteps(gem.totalValue);
+      let html = '';
+      steps.forEach((s, idx) => {
+        if (idx > 0) html += '<span class="root-step-arrow">&rarr;</span>';
+        if (idx === steps.length - 1) {
+          html += '<span class="root-step-final">' + s + '</span>';
+        } else {
+          html += s;
+        }
+      });
+      stepsEl.innerHTML = html;
+    } else if (gem.totalValue > 0) {
+      stepsEl.innerHTML = '<span class="root-step-final">single digit</span>';
+    } else {
+      stepsEl.innerHTML = '';
+    }
+
     // Per-word breakdown
     const wordsContainer = document.getElementById('gematriaWords');
     if (gem.wordBreakdown.length === 0) {
@@ -1248,6 +1472,8 @@
     // Update gematria
     const gem = computeGematria(textInput.value);
     document.getElementById('statGematria').textContent = gem.totalValue || '0';
+    const rootVal = gem.totalValue > 0 ? digitalRoot(gem.totalValue) : 0;
+    document.getElementById('statRoot').textContent = rootVal;
     updateGematriaSection(gem);
   }
 
@@ -1261,6 +1487,15 @@
     if (isHidden && container._data) {
       renderLetterBreakdown(container._data, container);
     }
+  });
+
+  // Gematria explainer toggle
+  document.getElementById('gemExplainerToggle').addEventListener('click', function() {
+    const body = document.getElementById('gemExplainerBody');
+    const arrow = document.getElementById('gemExplainerArrow');
+    const isHidden = body.style.display === 'none';
+    body.style.display = isHidden ? 'block' : 'none';
+    arrow.classList.toggle('open', isHidden);
   });
 
   // Gematria mapping reference toggle
