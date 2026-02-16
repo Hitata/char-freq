@@ -321,6 +321,110 @@
     width: 320px;
   }
 
+  /* ─── Layout Toggle ─── */
+  .layout-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    justify-content: flex-end;
+  }
+
+  .layout-toggle .toggle-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    transition: all 0.25s ease;
+  }
+
+  .layout-toggle .toggle-label:hover {
+    color: var(--text-secondary);
+  }
+
+  .layout-toggle .toggle-label.active {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(74, 124, 255, 0.08);
+  }
+
+  /* ─── Split Keyboard (Sofle) ─── */
+  .keyboard-split {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .keyboard-half {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .kb-row-stagger {
+    display: flex;
+    gap: 6px;
+    align-items: flex-end;
+  }
+
+  .key-stagger {
+    position: relative;
+  }
+
+  .key-small {
+    width: 46px;
+    height: 46px;
+  }
+
+  .key-small .letter {
+    font-size: 0.75rem;
+  }
+
+  .key-small .count {
+    font-size: 0.48rem;
+  }
+
+  .key-mod {
+    width: 46px;
+    height: 46px;
+    opacity: 0.45;
+  }
+
+  .key-mod .letter {
+    font-size: 0.5rem;
+    text-transform: none;
+  }
+
+  .key-encoder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    opacity: 0.35;
+  }
+
+  .key-encoder .letter {
+    font-size: 0.48rem;
+    text-transform: none;
+  }
+
+  .key-thumb {
+    width: 44px;
+    height: 38px;
+    border-radius: 8px 8px 14px 14px;
+    opacity: 0.45;
+  }
+
+  .key-thumb .letter {
+    font-size: 0.45rem;
+    text-transform: none;
+  }
+
   /* ─── Color Scale Legend ─── */
   .legend {
     display: flex;
@@ -372,6 +476,16 @@
     .keyboard { gap: 3px; }
     .bar-chart { height: 150px; }
     .bar-label { font-size: 0.45rem; }
+    .keyboard-split { gap: 16px; }
+    .key-small { width: 30px; height: 34px; }
+    .key-small .letter { font-size: 0.55rem; }
+    .key-small .count { font-size: 0.38rem; }
+    .key-mod { width: 30px; height: 34px; }
+    .key-mod .letter { font-size: 0.4rem; }
+    .key-encoder { width: 28px; height: 28px; }
+    .key-thumb { width: 30px; height: 28px; }
+    .key-thumb .letter { font-size: 0.38rem; }
+    .layout-toggle .toggle-label { font-size: 0.58rem; padding: 3px 7px; }
   }
 </style>
 </head>
@@ -404,6 +518,10 @@
 
   <div class="section-title">Keyboard Heatmap</div>
   <div class="chart-card">
+    <div class="layout-toggle" id="layoutToggle">
+      <span class="toggle-label active" data-layout="standard">Standard</span>
+      <span class="toggle-label" data-layout="sofle">Sofle v2</span>
+    </div>
     <div class="keyboard" id="keyboard"></div>
     <div class="legend">
       <span class="legend-label">0</span>
@@ -423,6 +541,70 @@
     { keys: 'asdfghjkl'.split(''), type: 'letter' },
     { keys: 'zxcvbnm'.split(''), type: 'letter' },
   ];
+
+  // Sofle v2: 6×4+5 column-staggered split keyboard
+  // Each half row: array of { key, type } where type = 'char' | 'mod' | 'encoder' | 'thumb'
+  // Column stagger offsets (px) per column for each half (pinky to index+inner)
+  const SOFLE_COL_OFFSETS_L = [12, 6, 0, 3, 8, 12]; // left: pinky→inner
+  const SOFLE_COL_OFFSETS_R = [12, 8, 3, 0, 6, 12]; // right: inner→pinky
+
+  const SOFLE_LEFT = [
+    // Row 1: Number row
+    [
+      { key: '`', type: 'mod' }, { key: '1', type: 'char' }, { key: '2', type: 'char' },
+      { key: '3', type: 'char' }, { key: '4', type: 'char' }, { key: '5', type: 'char' },
+    ],
+    // Row 2: Top alpha
+    [
+      { key: 'Esc', type: 'mod' }, { key: 'q', type: 'char' }, { key: 'w', type: 'char' },
+      { key: 'e', type: 'char' }, { key: 'r', type: 'char' }, { key: 't', type: 'char' },
+    ],
+    // Row 3: Home row
+    [
+      { key: 'Tab', type: 'mod' }, { key: 'a', type: 'char' }, { key: 's', type: 'char' },
+      { key: 'd', type: 'char' }, { key: 'f', type: 'char' }, { key: 'g', type: 'char' },
+    ],
+    // Row 4: Bottom alpha
+    [
+      { key: 'Sft', type: 'mod' }, { key: 'z', type: 'char' }, { key: 'x', type: 'char' },
+      { key: 'c', type: 'char' }, { key: 'v', type: 'char' }, { key: 'b', type: 'char' },
+    ],
+    // Row 5: Thumb cluster
+    [
+      { key: 'Gui', type: 'thumb' }, { key: 'Alt', type: 'thumb' }, { key: 'Ctrl', type: 'thumb' },
+      { key: 'Lo', type: 'thumb' }, { key: 'Ent', type: 'thumb' },
+    ],
+  ];
+
+  const SOFLE_RIGHT = [
+    // Row 1: Number row
+    [
+      { key: '6', type: 'char' }, { key: '7', type: 'char' }, { key: '8', type: 'char' },
+      { key: '9', type: 'char' }, { key: '0', type: 'char' }, { key: '`', type: 'mod' },
+    ],
+    // Row 2: Top alpha
+    [
+      { key: 'y', type: 'char' }, { key: 'u', type: 'char' }, { key: 'i', type: 'char' },
+      { key: 'o', type: 'char' }, { key: 'p', type: 'char' }, { key: 'Bks', type: 'mod' },
+    ],
+    // Row 3: Home row
+    [
+      { key: 'h', type: 'char' }, { key: 'j', type: 'char' }, { key: 'k', type: 'char' },
+      { key: 'l', type: 'char' }, { key: ';', type: 'mod' }, { key: "'", type: 'mod' },
+    ],
+    // Row 4: Bottom alpha
+    [
+      { key: 'n', type: 'char' }, { key: 'm', type: 'char' }, { key: ',', type: 'mod' },
+      { key: '.', type: 'mod' }, { key: '/', type: 'mod' }, { key: 'Sft', type: 'mod' },
+    ],
+    // Row 5: Thumb cluster
+    [
+      { key: 'Spc', type: 'thumb' }, { key: 'Ra', type: 'thumb' }, { key: 'Ctrl', type: 'thumb' },
+      { key: 'Alt', type: 'thumb' }, { key: 'Gui', type: 'thumb' },
+    ],
+  ];
+
+  let currentLayout = 'standard';
 
   const textInput = document.getElementById('textInput');
   const charCounter = document.getElementById('charCounter');
@@ -458,9 +640,10 @@
     });
   }
 
-  // Build keyboard
-  function buildKeyboard() {
+  // Build standard keyboard
+  function buildStandardKeyboard() {
     keyboard.innerHTML = '';
+    keyboard.className = 'keyboard';
     KB_ROWS.forEach(row => {
       const rowEl = document.createElement('div');
       rowEl.className = 'kb-row';
@@ -488,6 +671,95 @@
       keyboard.appendChild(rowEl);
     });
   }
+
+  // Build Sofle v2 split keyboard
+  function buildSofleKeyboard() {
+    keyboard.innerHTML = '';
+    keyboard.className = 'keyboard-split';
+
+    function buildHalf(halfData, colOffsets, side) {
+      const halfEl = document.createElement('div');
+      halfEl.className = 'keyboard-half';
+
+      halfData.forEach((row, rowIdx) => {
+        const rowEl = document.createElement('div');
+        rowEl.className = 'kb-row-stagger';
+
+        row.forEach((item, colIdx) => {
+          const isThumbRow = item.type === 'thumb';
+          const wrapper = document.createElement('div');
+          wrapper.className = 'key-stagger';
+
+          // Apply column stagger offset for non-thumb rows
+          if (!isThumbRow && colOffsets[colIdx] !== undefined) {
+            wrapper.style.marginTop = colOffsets[colIdx] + 'px';
+          }
+
+          const key = document.createElement('div');
+          const isChar = item.type === 'char';
+          let extraClass = ' key-small';
+          if (item.type === 'mod') extraClass = ' key-small key-mod';
+          if (item.type === 'encoder') extraClass = ' key-small key-encoder';
+          if (item.type === 'thumb') extraClass = ' key-small key-thumb';
+
+          key.className = 'key' + extraClass;
+          key.style.background = 'var(--bg-tertiary)';
+
+          // Only assign IDs for trackable characters (letters/numbers)
+          if (isChar) {
+            key.id = `key-${item.key}`;
+          }
+
+          const letterSpan = document.createElement('span');
+          letterSpan.className = 'letter';
+          letterSpan.textContent = isChar ? item.key.toUpperCase() : item.key;
+
+          const countSpan = document.createElement('span');
+          countSpan.className = 'count';
+          if (isChar) {
+            countSpan.id = `kc-${item.key}`;
+          }
+          countSpan.textContent = '';
+
+          key.appendChild(letterSpan);
+          key.appendChild(countSpan);
+          wrapper.appendChild(key);
+          rowEl.appendChild(wrapper);
+        });
+
+        halfEl.appendChild(rowEl);
+      });
+
+      return halfEl;
+    }
+
+    keyboard.appendChild(buildHalf(SOFLE_LEFT, SOFLE_COL_OFFSETS_L, 'left'));
+    keyboard.appendChild(buildHalf(SOFLE_RIGHT, SOFLE_COL_OFFSETS_R, 'right'));
+  }
+
+  // Build keyboard based on current layout
+  function buildKeyboard() {
+    if (currentLayout === 'sofle') {
+      buildSofleKeyboard();
+    } else {
+      buildStandardKeyboard();
+    }
+  }
+
+  // Layout toggle
+  document.getElementById('layoutToggle').addEventListener('click', function(e) {
+    const label = e.target.closest('.toggle-label');
+    if (!label) return;
+    const layout = label.dataset.layout;
+    if (layout === currentLayout) return;
+
+    currentLayout = layout;
+    this.querySelectorAll('.toggle-label').forEach(l => l.classList.remove('active'));
+    label.classList.add('active');
+
+    buildKeyboard();
+    update();
+  });
 
   // Color interpolation
   function getHeatColor(ratio) {
@@ -574,6 +846,7 @@
     allKeys.forEach(k => {
       const keyEl = document.getElementById(`key-${k}`);
       const countEl = document.getElementById(`kc-${k}`);
+      if (!keyEl || !countEl) return;
       const count = freq[k];
       const ratio = maxCount > 0 ? count / maxCount : 0;
 
